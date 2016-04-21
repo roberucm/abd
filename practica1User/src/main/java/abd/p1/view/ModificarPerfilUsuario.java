@@ -5,14 +5,16 @@
  */
 package abd.p1.view;
 
+import abd.p1.controller.Controlador;
+import abd.p1.model.Genero;
 import abd.p1.model.Usuario;
 import com.toedter.calendar.JDateChooser;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
@@ -29,14 +31,20 @@ public class ModificarPerfilUsuario extends javax.swing.JFrame {
     /**
      * Creates new form PerfilUsuario
      */
+   
+    private Controlador ctrl;
     private Usuario user;
     private String cambiaNombre;
-    private File cambiaAvatar;
-    private String cambiaSexo;
+    private Date cambiaFecha;
+    private byte[] cambiaAvatar;
+    private Genero cambiaGenero;
+    private Genero cambiaPreferencia;    
     private DefaultListModel listaModel = new DefaultListModel();
     private List<String> aficiones = new ArrayList<String>();
-    public ModificarPerfilUsuario(boolean editar, Usuario user) {
+    
+    public ModificarPerfilUsuario(Controlador ctrl, boolean editar, Usuario user) {
         initComponents();
+        this.ctrl = ctrl;
         this.user = user;
     }
 
@@ -110,7 +118,7 @@ public class ModificarPerfilUsuario extends javax.swing.JFrame {
         jLabel3.setText("Aficiones");
 
         ListaAficiones.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            String[] strings = {};
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
@@ -124,8 +132,18 @@ public class ModificarPerfilUsuario extends javax.swing.JFrame {
         });
 
         ButtonEliminarAficion.setText("Eliminar seleccionada");
+        ButtonEliminarAficion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ButtonEliminarAficionActionPerformed(evt);
+            }
+        });
 
         ButtonEditarAficion.setText("Editar seleccionada");
+        ButtonEditarAficion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ButtonEditarAficionActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText("Sexo: ");
 
@@ -245,6 +263,11 @@ public class ModificarPerfilUsuario extends javax.swing.JFrame {
         });
 
         ButtonCancelar.setText("Cancelar");
+        ButtonCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ButtonCancelarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -294,7 +317,7 @@ public class ModificarPerfilUsuario extends javax.swing.JFrame {
         JPanel panel = new JPanel();
         JFileChooser avatar = new JFileChooser();
         avatar.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        FileNameExtensionFilter filtro = new FileNameExtensionFilter("*.JPG", "jpg");
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("JPG y PNG","jpg","png");
         avatar.setFileFilter(filtro);
         panel.add(avatar);
         JButton aceptar = new JButton("Aceptar");
@@ -304,8 +327,8 @@ public class ModificarPerfilUsuario extends javax.swing.JFrame {
         aceptar.addActionListener(new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cambiaAvatar = avatar.getSelectedFile();
-                System.out.println(cambiaAvatar);
+                ImageIcon cambiaImagen = new ImageIcon(avatar.getSelectedFile().toString());
+                // falta pasar a array de bytes
                 frame.setVisible(false);
             }
         });
@@ -318,12 +341,18 @@ public class ModificarPerfilUsuario extends javax.swing.JFrame {
        JPanel cambiarPreferencia = new JPanel();
        JButton aceptar = new JButton("Aceptar");
        JCheckBox masculino = new JCheckBox("Masculino");
-       JCheckBox femenino = new JCheckBox("Femenino");
+       JCheckBox femenino = new JCheckBox("Femenino");       
        cambiarPreferencia.add(masculino);
        cambiarPreferencia.add(femenino);
        cambiarPreferencia.add(aceptar);
        frame.add(cambiarPreferencia);
        frame.setVisible(true);
+       if(masculino.isSelected())
+           cambiaGenero = Genero.HOMBRE;
+       else if (femenino.isSelected())
+           cambiaGenero = Genero.MUJER;
+       else
+           cambiaGenero = Genero.AMBOS;
     }//GEN-LAST:event_ButtonCambiarSexoActionPerformed
 
     private void ButtonCambiarFechaNacimientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonCambiarFechaNacimientoActionPerformed
@@ -339,8 +368,8 @@ public class ModificarPerfilUsuario extends javax.swing.JFrame {
         aceptar.addActionListener(new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Date date = fecha.getDate();
-                System.out.println(date);
+                cambiaFecha = fecha.getDate();
+                System.out.println(cambiaFecha);
                 frame.setVisible(false);
             }
         });
@@ -348,7 +377,6 @@ public class ModificarPerfilUsuario extends javax.swing.JFrame {
 
     private void ButtonCambiarPreferenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonCambiarPreferenciaActionPerformed
         // TODO add your handling code here:
-        // tiene que ser solo dos o tres opciones opciones
        JFrame frame = new JFrame("Editar preferencia");
        frame.setBounds(500, 60, 350, 80);
        JPanel cambiarPreferencia = new JPanel();
@@ -362,15 +390,40 @@ public class ModificarPerfilUsuario extends javax.swing.JFrame {
        cambiarPreferencia.add(aceptar);
        frame.add(cambiarPreferencia);
        frame.setVisible(true);
+       
+        aceptar.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent evt) {       
+                if(hombres.isSelected())
+                    cambiaPreferencia = Genero.HOMBRE;
+                else if (mujeres.isSelected())
+                    cambiaPreferencia = Genero.MUJER;
+                else
+                    cambiaPreferencia = Genero.AMBOS;
+
+                 System.out.println(cambiaPreferencia);
+                 frame.setVisible(false);
+            }
+        });
+
               
     }//GEN-LAST:event_ButtonCambiarPreferenciaActionPerformed
 
     private void ButtonGuardarCambiosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonGuardarCambiosActionPerformed
         // Los cambios no se realizan en la bd hasta que llegue aquí
         
-        
-        
-        
+        user.setNombre(cambiaNombre);
+        user.setFecha_nac(cambiaFecha);
+        //user.setFoto(cambiaAvatar.);
+        user.setGenero(cambiaGenero);
+        user.setBusca(cambiaPreferencia);
+        user.setAficiones(aficiones);
+        user.setDescripcion(textAreaDescripcion.getText());
+        user.setAmigo(null);
+        user.setCompleta(null);
+        user.setRecibidos(null);
+        user.setEnviados(null);
+      
     }//GEN-LAST:event_ButtonGuardarCambiosActionPerformed
 
     private void ButtonAddAficionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonAddAficionActionPerformed
@@ -383,6 +436,37 @@ public class ModificarPerfilUsuario extends javax.swing.JFrame {
         System.out.println(nuevaAficion);
         
     }//GEN-LAST:event_ButtonAddAficionActionPerformed
+
+    private void ButtonEliminarAficionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonEliminarAficionActionPerformed
+       // Borra la aficion que se selecciona
+       listaModel.remove(ListaAficiones.getSelectedIndex());       
+    }//GEN-LAST:event_ButtonEliminarAficionActionPerformed
+
+    private void ButtonEditarAficionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonEditarAficionActionPerformed
+        JFrame addAficion = new JFrame("Editar afición");
+        String nuevaAficion = JOptionPane.showInputDialog(addAficion, "Editar esta afición: ");
+        int index = ListaAficiones.getSelectedIndex();
+        System.out.println("Vas a cambiar en la pos " + index);
+        listaModel.remove(index); 
+        aficiones.add(index, nuevaAficion);
+        listaModel.add(index, nuevaAficion);
+        ListaAficiones.setModel(listaModel);
+        System.out.println(nuevaAficion);        
+    }//GEN-LAST:event_ButtonEditarAficionActionPerformed
+
+    private void ButtonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonCancelarActionPerformed
+        // TODO add your handling code here:
+        /* Si se pulsa este boton, la lista de aficiones se vacia y
+        se dejan los labels por defecto
+        */
+        // borra las aficiones que antes estaban
+        listaModel.removeAllElements();
+        ListaAficiones.removeAll();
+        // borra el area de texto
+        textAreaDescripcion.setText(null);
+        
+      // this.setVisible(false);
+    }//GEN-LAST:event_ButtonCancelarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -411,12 +495,13 @@ public class ModificarPerfilUsuario extends javax.swing.JFrame {
         }
         //</editor-fold>
         //</editor-fold>
+        Controlador ctrl = new Controlador(null);
         Usuario user = new Usuario();
         boolean mostrar = true;
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ModificarPerfilUsuario(mostrar, user).setVisible(true);
+                new ModificarPerfilUsuario(ctrl, mostrar, user).setVisible(true);
             }
         });
     }

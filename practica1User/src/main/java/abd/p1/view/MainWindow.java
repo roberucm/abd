@@ -6,6 +6,7 @@
 package abd.p1.view;
 
 import abd.p1.controller.Controlador;
+import abd.p1.model.Usuario;
 
 /**
  *
@@ -39,15 +40,17 @@ public class MainWindow extends javax.swing.JFrame {
         jMenu6 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenu7 = new javax.swing.JMenu();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jCheckBox2 = new javax.swing.JCheckBox();
-        jTextField1 = new javax.swing.JTextField();
+        ButtonModificarPerfil = new javax.swing.JButton();
+        ButtonVerPerfil = new javax.swing.JButton();
+        FiltrarPorNombreCheckBox = new javax.swing.JCheckBox();
+        FiltrarAmigosCheckBox = new javax.swing.JCheckBox();
+        TextFieldFiltrarPorNombre = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList<>();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu4 = new javax.swing.JMenu();
-        jMenu5 = new javax.swing.JMenu();
-        jMenu8 = new javax.swing.JMenu();
+        MenuUsuarios = new javax.swing.JMenu();
+        MenuPregunta = new javax.swing.JMenu();
+        MenuMensajesNoLeidos = new javax.swing.JMenu();
 
         jMenu1.setText("jMenu1");
 
@@ -68,26 +71,38 @@ public class MainWindow extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Ventana principal");
 
-        jButton2.setText("Modificar mi perfil");
+        ButtonModificarPerfil.setText("Modificar mi perfil");
+        ButtonModificarPerfil.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ButtonModificarPerfilActionPerformed(evt);
+            }
+        });
 
-        jButton3.setText("Ver perfil seleccionado");
+        ButtonVerPerfil.setText("Ver perfil seleccionado");
 
-        jCheckBox1.setText("Filtrar por nombre: ");
+        FiltrarPorNombreCheckBox.setText("Filtrar por nombre: ");
 
-        jCheckBox2.setText("Mostrar sólo amigos");
+        FiltrarAmigosCheckBox.setText("Mostrar sólo amigos");
+
+        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane1.setViewportView(jList1);
 
         jMenuBar1.setBorder(null);
 
-        jMenu4.setBackground(new java.awt.Color(204, 204, 255));
-        jMenu4.setText("Usuarios");
-        jMenuBar1.add(jMenu4);
+        MenuUsuarios.setBackground(new java.awt.Color(204, 204, 255));
+        MenuUsuarios.setText("Usuarios");
+        jMenuBar1.add(MenuUsuarios);
 
-        jMenu5.setText("Pregunta");
-        jMenuBar1.add(jMenu5);
+        MenuPregunta.setText("Pregunta");
+        jMenuBar1.add(MenuPregunta);
 
-        jMenu8.setBorder(null);
-        jMenu8.setText("Mensajes no leídos");
-        jMenuBar1.add(jMenu8);
+        MenuMensajesNoLeidos.setBorder(null);
+        MenuMensajesNoLeidos.setText("Mensajes no leídos");
+        jMenuBar1.add(MenuMensajesNoLeidos);
 
         setJMenuBar(jMenuBar1);
 
@@ -98,38 +113,50 @@ public class MainWindow extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(38, 38, 38)
-                        .addComponent(jButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton3))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(38, 38, 38)
+                                .addComponent(ButtonModificarPerfil)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(ButtonVerPerfil))
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(FiltrarPorNombreCheckBox)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(TextFieldFiltrarPorNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(FiltrarAmigosCheckBox)))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jCheckBox1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jCheckBox2)))
-                .addContainerGap(23, Short.MAX_VALUE))
+                        .addComponent(jScrollPane1)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(230, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jCheckBox1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jCheckBox2)
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 252, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
+                    .addComponent(FiltrarPorNombreCheckBox)
+                    .addComponent(TextFieldFiltrarPorNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(FiltrarAmigosCheckBox)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ButtonModificarPerfil)
+                    .addComponent(ButtonVerPerfil))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void ButtonModificarPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonModificarPerfilActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ButtonModificarPerfilActionPerformed
 
     /**
      * @param args the command line arguments
@@ -160,7 +187,7 @@ public class MainWindow extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
-        Controlador ctrl = new Controlador();
+        Controlador ctrl = new Controlador(null);
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -170,22 +197,24 @@ public class MainWindow extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JCheckBox jCheckBox2;
+    private javax.swing.JButton ButtonModificarPerfil;
+    private javax.swing.JButton ButtonVerPerfil;
+    private javax.swing.JCheckBox FiltrarAmigosCheckBox;
+    private javax.swing.JCheckBox FiltrarPorNombreCheckBox;
+    private javax.swing.JMenu MenuMensajesNoLeidos;
+    private javax.swing.JMenu MenuPregunta;
+    private javax.swing.JMenu MenuUsuarios;
+    private javax.swing.JTextField TextFieldFiltrarPorNombre;
+    private javax.swing.JList<String> jList1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu4;
-    private javax.swing.JMenu jMenu5;
     private javax.swing.JMenu jMenu6;
     private javax.swing.JMenu jMenu7;
-    private javax.swing.JMenu jMenu8;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }
