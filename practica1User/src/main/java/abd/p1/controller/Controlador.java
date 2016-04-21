@@ -40,8 +40,6 @@ public class Controlador {
         
         // lanzar la vista principal
         
-        
-        
     }
     
     public ArrayList obtenerUsuarios(){
