@@ -8,6 +8,7 @@ package abd.p1.controller;
 import abd.p1.bd.UsuarioDAO;
 import abd.p1.model.Usuario;
 import abd.p1.view.ModificarPerfilUsuario;
+import java.util.ArrayList;
 import org.hibernate.SessionFactory;
 
 /**
@@ -42,5 +43,11 @@ public class Controlador {
         
         
     }
+    
+    public ArrayList obtenerUsuarios(){
+        UsuarioDAO ud = new UsuarioDAO(sf);
+        return ud.obtenerUsuarios();
+    }
+    
     
 }

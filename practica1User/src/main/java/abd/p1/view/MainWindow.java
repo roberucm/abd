@@ -7,6 +7,7 @@ package abd.p1.view;
 
 import abd.p1.controller.Controlador;
 import abd.p1.model.Usuario;
+import java.util.ArrayList;
 
 /**
  *
@@ -84,10 +85,11 @@ public class MainWindow extends javax.swing.JFrame {
 
         FiltrarAmigosCheckBox.setText("Mostrar sólo amigos");
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
+        jList1.setModel(new javax.swing.AbstractListModel<Usuario>() {
+
+            ArrayList usuarios = ctrl.obtenerUsuarios();
+            public int getSize() { return usuarios.size(); }
+            public Object getElementAt(int i) { return (Object)usuarios.get(i); }
         });
         jScrollPane1.setViewportView(jList1);
 
@@ -205,7 +207,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JMenu MenuPregunta;
     private javax.swing.JMenu MenuUsuarios;
     private javax.swing.JTextField TextFieldFiltrarPorNombre;
-    private javax.swing.JList<String> jList1;
+    private javax.swing.JList<Usuario> jList1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;

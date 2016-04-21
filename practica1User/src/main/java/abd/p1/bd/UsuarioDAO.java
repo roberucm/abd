@@ -9,6 +9,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import abd.p1.model.Usuario;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,7 +26,7 @@ public class UsuarioDAO {
     public boolean comprobarUsuario(String user, String password){
         String sql = "SELECT * FROM usuarios WHERE correo = " + user + " AND contrasena = " + password;
         Session session = sf.openSession();
-        Query query = session.createQuery("FROM usuarios");
+        Query query = session.createQuery(sql);
         List<Usuario> users = (List<Usuario>) query.list();
         if(users.isEmpty())
             return false;
@@ -43,9 +44,14 @@ public class UsuarioDAO {
         Session session = sf.openSession();
         Query query = session.createSQLQuery(sql);
         int result = query.executeUpdate();
-        
-        
-        
+    }
+    
+    public ArrayList obtenerUsuarios(){
+        String sql = "SELECT nombre, fecha_nac, foto FROM usuarios";
+        Session sesion = sf.openSession();
+        Query consulta = sesion.createQuery(sql);
+        ArrayList<Usuario> usuarios = (ArrayList<Usuario>) consulta.list();
+        return usuarios;
     }
     
 }
