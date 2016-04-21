@@ -7,7 +7,7 @@ package abd.p1.view;
 
 import abd.p1.controller.Controlador;
 import abd.p1.model.Usuario;
-import abd.p1.view.EdicionUsuario;
+
 
 /**
  *
