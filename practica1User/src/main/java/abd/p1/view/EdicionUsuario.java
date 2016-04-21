@@ -8,6 +8,7 @@ import abd.p1.controller.Controlador;
 import abd.p1.model.Genero;
 import abd.p1.model.Usuario;
 import com.toedter.calendar.JDateChooser;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -157,6 +158,11 @@ public class EdicionUsuario extends javax.swing.JDialog {
         });
 
         ButtonCambiarPreferencia.setText("Cambiar preferencia");
+        ButtonCambiarPreferencia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ButtonCambiarPreferenciaActionPerformed(evt);
+            }
+        });
 
         LabelNombre.setText("Nombre");
 
@@ -302,12 +308,13 @@ public class EdicionUsuario extends javax.swing.JDialog {
         // TODO add your handling code here:
         JDialog cambiarNombre = new JDialog(this, true);
         cambiaNombre = JOptionPane.showInputDialog(cambiarNombre, "Editar nombre");
+        LabelNombre.setText(cambiaNombre);
         System.out.println(cambiaNombre);
     }//GEN-LAST:event_ButtonCambiarNombreActionPerformed
 
     private void ButtonCambiarFechaNacimientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonCambiarFechaNacimientoActionPerformed
         JDialog dialog = new JDialog(this, true);
-        dialog.setBounds(0, 0, 400, 150);
+        dialog.setBounds(200, 200, 400, 150);
         JPanel panel = new JPanel();
         JDateChooser fecha = new JDateChooser();
         panel.add(fecha);
@@ -315,14 +322,17 @@ public class EdicionUsuario extends javax.swing.JDialog {
         panel.add(aceptar);
         dialog.add(panel);
         dialog.setVisible(true);
-        aceptar.addActionListener(new java.awt.event.ActionListener() {
+        System.out.println("vista");
+        System.out.println(fecha.getDate().toString());
+        aceptar.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            public void actionPerformed(ActionEvent e) {
                 cambiaFecha = fecha.getDate();
                 System.out.println(cambiaFecha);
-                dialog.setVisible(false);
+                dialog.setVisible(false);            
             }
         });
+
     }//GEN-LAST:event_ButtonCambiarFechaNacimientoActionPerformed
 
     private void ButtonCambiarAvatarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonCambiarAvatarActionPerformed
@@ -354,10 +364,68 @@ public class EdicionUsuario extends javax.swing.JDialog {
         aficiones.add(nuevaAficion);
         listaModel.addElement(nuevaAficion);
         ListaAficiones.setModel(listaModel);
-        System.out.println(nuevaAficion);
     }//GEN-LAST:event_ButtonAddAficionActionPerformed
 
     private void ButtonEditarAficionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonEditarAficionActionPerformed
+        JDialog addAficion = new JDialog(this, true);
+        String nuevaAficion = JOptionPane.showInputDialog(addAficion, "Editar esta afición: ");
+        int index = ListaAficiones.getSelectedIndex();
+        System.out.println("Vas a cambiar en la pos " + index);
+        listaModel.remove(index); 
+        aficiones.add(index, nuevaAficion);
+        listaModel.add(index, nuevaAficion);
+        ListaAficiones.setModel(listaModel);
+    }//GEN-LAST:event_ButtonEditarAficionActionPerformed
+
+    private void ButtonGuardarCambiosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonGuardarCambiosActionPerformed
+        user.setNombre(cambiaNombre);
+        user.setFecha_nac(cambiaFecha);
+        //user.setFoto(cambiaAvatar.);
+        user.setGenero(cambiaGenero);
+        user.setBusca(cambiaPreferencia);
+        user.setAficiones(aficiones);
+        user.setDescripcion(textAreaDescripcion.getText());
+        this.setVisible(false);
+
+    }//GEN-LAST:event_ButtonGuardarCambiosActionPerformed
+
+    private void ButtonCambiarSexoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonCambiarSexoActionPerformed
+       JDialog dialog = new JDialog(this, true);
+       dialog.setBounds(500, 60, 350, 80);
+       JPanel cambiarPreferencia = new JPanel();
+       JButton aceptar = new JButton("Aceptar");
+       JCheckBox masculino = new JCheckBox("Masculino");
+       JCheckBox femenino = new JCheckBox("Femenino");       
+       cambiarPreferencia.add(masculino);
+       cambiarPreferencia.add(femenino);
+       cambiarPreferencia.add(aceptar);
+       dialog.add(cambiarPreferencia);
+       dialog.setVisible(true);
+       if(masculino.isSelected()){
+           cambiaGenero = Genero.HOMBRE;
+           LabelSexo.setText("Masculino");
+       }else if (femenino.isSelected()){
+           cambiaGenero = Genero.MUJER;
+           LabelSexo.setText("Femenino");
+       }
+       
+    }//GEN-LAST:event_ButtonCambiarSexoActionPerformed
+
+    private void ButtonEliminarAficionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonEliminarAficionActionPerformed
+       listaModel.remove(ListaAficiones.getSelectedIndex()); 
+    }//GEN-LAST:event_ButtonEliminarAficionActionPerformed
+
+    private void ButtonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonCancelarActionPerformed
+        cancelar = true;
+        // borra las aficiones que antes estaban
+        listaModel.removeAllElements();
+        ListaAficiones.removeAll();
+        // borra el area de texto
+        textAreaDescripcion.setText(null);        
+        this.setVisible(false);
+    }//GEN-LAST:event_ButtonCancelarActionPerformed
+
+    private void ButtonCambiarPreferenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonCambiarPreferenciaActionPerformed
        JDialog dialog = new JDialog(this, true);
        dialog.setBounds(500, 60, 350, 80);
        JPanel cambiarPreferencia = new JPanel();
@@ -375,67 +443,22 @@ public class EdicionUsuario extends javax.swing.JDialog {
         aceptar.addActionListener(new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {       
-                if(hombres.isSelected())
+                if(hombres.isSelected()){
                     cambiaPreferencia = Genero.HOMBRE;
-                else if (mujeres.isSelected())
+                    LabelBusca.setText("Hombres");
+                } else if (mujeres.isSelected()){
                     cambiaPreferencia = Genero.MUJER;
-                else
+                    LabelBusca.setText("Mujeres");
+                }else{
                     cambiaPreferencia = Genero.AMBOS;
+                    LabelBusca.setText("Ambos");
+                }
 
                  System.out.println(cambiaPreferencia);
                  dialog.setVisible(false);
             }
         });
-
-    }//GEN-LAST:event_ButtonEditarAficionActionPerformed
-
-    private void ButtonGuardarCambiosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonGuardarCambiosActionPerformed
-        user.setNombre(cambiaNombre);
-        user.setFecha_nac(cambiaFecha);
-        //user.setFoto(cambiaAvatar.);
-        user.setGenero(cambiaGenero);
-        user.setBusca(cambiaPreferencia);
-        user.setAficiones(aficiones);
-        user.setDescripcion(textAreaDescripcion.getText());
-        user.setAmigo(null);
-        user.setCompleta(null);
-        user.setRecibidos(null);
-        user.setEnviados(null);
-    }//GEN-LAST:event_ButtonGuardarCambiosActionPerformed
-
-    private void ButtonCambiarSexoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonCambiarSexoActionPerformed
-       JDialog dialog = new JDialog(this, true);
-       dialog.setBounds(500, 60, 350, 80);
-       JPanel cambiarPreferencia = new JPanel();
-       JButton aceptar = new JButton("Aceptar");
-       JCheckBox masculino = new JCheckBox("Masculino");
-       JCheckBox femenino = new JCheckBox("Femenino");       
-       cambiarPreferencia.add(masculino);
-       cambiarPreferencia.add(femenino);
-       cambiarPreferencia.add(aceptar);
-       dialog.add(cambiarPreferencia);
-       dialog.setVisible(true);
-       if(masculino.isSelected())
-           cambiaGenero = Genero.HOMBRE;
-       else if (femenino.isSelected())
-           cambiaGenero = Genero.MUJER;
-       else
-           cambiaGenero = Genero.AMBOS;
-    }//GEN-LAST:event_ButtonCambiarSexoActionPerformed
-
-    private void ButtonEliminarAficionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonEliminarAficionActionPerformed
-       listaModel.remove(ListaAficiones.getSelectedIndex()); 
-    }//GEN-LAST:event_ButtonEliminarAficionActionPerformed
-
-    private void ButtonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonCancelarActionPerformed
-        cancelar = true;
-        // borra las aficiones que antes estaban
-        listaModel.removeAllElements();
-        ListaAficiones.removeAll();
-        // borra el area de texto
-        textAreaDescripcion.setText(null);        
-        this.setVisible(false);
-    }//GEN-LAST:event_ButtonCancelarActionPerformed
+    }//GEN-LAST:event_ButtonCambiarPreferenciaActionPerformed
 
     /**
      * @param args the command line arguments

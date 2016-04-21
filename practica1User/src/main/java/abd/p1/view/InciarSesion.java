@@ -138,7 +138,9 @@ public class InciarSesion extends javax.swing.JDialog {
     }//GEN-LAST:event_ButtonAceptarActionPerformed
 
     private void ButtonNuevoUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonNuevoUsuarioActionPerformed
-        user.setCorreo(dirCorreoTextField.getText());
+       
+    	System.out.println(dirCorreoTextField.getText() + " " + PasswordField.getText());
+    	user.setCorreo(dirCorreoTextField.getText());
         user.setContrasena(PasswordField.getText());
         EdicionUsuario ed = new EdicionUsuario(null, true, ctrl, user);
         ed.setVisible(true);
@@ -176,7 +178,9 @@ public class InciarSesion extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                InciarSesion dialog = new InciarSesion(new javax.swing.JFrame(), true, null, null);
+                Usuario user = new Usuario();
+                Controlador ctrl = new Controlador(null);
+                InciarSesion dialog = new InciarSesion(new javax.swing.JFrame(), true, ctrl, user);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

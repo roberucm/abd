@@ -294,9 +294,6 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Cambiar preferencia"/>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ButtonCambiarPreferenciaActionPerformed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="LabelNombre">
           <Properties>
