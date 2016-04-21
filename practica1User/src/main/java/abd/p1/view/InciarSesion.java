@@ -7,6 +7,7 @@ package abd.p1.view;
 
 import abd.p1.controller.Controlador;
 import abd.p1.model.Usuario;
+import abd.p1.view.EdicionUsuario;
 
 /**
  *
@@ -137,9 +138,12 @@ public class InciarSesion extends javax.swing.JDialog {
     }//GEN-LAST:event_ButtonAceptarActionPerformed
 
     private void ButtonNuevoUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonNuevoUsuarioActionPerformed
-        this.setVisible(false);
-        EdicionUsuario eu = new EdicionUsuario(null, true);
-        eu.setVisible(true);
+        user.setCorreo(dirCorreoTextField.getText());
+        user.setContrasena(PasswordField.getText());
+        EdicionUsuario ed = new EdicionUsuario(null, true, ctrl, user);
+        ed.setVisible(true);
+        System.out.println("estoy en iniciar sesion" + user.getNombre());
+        ctrl.nuevoUsuario(user);
     }//GEN-LAST:event_ButtonNuevoUsuarioActionPerformed
 
     /**

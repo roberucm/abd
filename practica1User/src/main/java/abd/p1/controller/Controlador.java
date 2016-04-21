@@ -34,11 +34,13 @@ public class Controlador {
     
     public void nuevoUsuario(Usuario usuario){
         UsuarioDAO ud = new UsuarioDAO(sf);
-        ModificarPerfilUsuario editarPerfil = new ModificarPerfilUsuario(this, true, usuario);
-        editarPerfil.setVisible(false);
-        ud.insertarUsuario(usuario);
+     
+        System.out.println("sale el nombre " + usuario.getNombre());
+     //   ud.insertarUsuario(usuario);
         
         // lanzar la vista principal
+        
+        
         
     }
     

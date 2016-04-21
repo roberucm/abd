@@ -4,19 +4,48 @@
  * and open the template in the editor.
  */
 package abd.p1.view;
+import abd.p1.controller.Controlador;
+import abd.p1.model.Genero;
+import abd.p1.model.Usuario;
+import com.toedter.calendar.JDateChooser;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
  * @author Jhersy
  */
 public class EdicionUsuario extends javax.swing.JDialog {
-
+    private boolean cancelar;
+    
+    private Controlador ctrl;
+    private Usuario user;
+    private String cambiaNombre;
+    private Date cambiaFecha;
+    private byte[] cambiaAvatar;
+    private Genero cambiaGenero;
+    private Genero cambiaPreferencia;    
+    private DefaultListModel listaModel = new DefaultListModel();
+    private List<String> aficiones = new ArrayList<String>();
     /**
      * Creates new form EdicionUsuario
      */
-    public EdicionUsuario(java.awt.Frame parent, boolean modal) {
+    public EdicionUsuario(java.awt.Frame parent, boolean modal, Controlador ctrl, Usuario user) {
         super(parent, modal);
         initComponents();
+        this.ctrl = ctrl;
+        this.user = user;
     }
 
     /**
@@ -34,10 +63,10 @@ public class EdicionUsuario extends javax.swing.JDialog {
         ButtonCambiarAvatar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        TextAreaDescripción = new javax.swing.JTextArea();
+        textAreaDescripcion = new javax.swing.JTextArea();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
+        ListaAficiones = new javax.swing.JList<>();
         ButtonAddAficion = new javax.swing.JButton();
         ButtonEliminarAficion = new javax.swing.JButton();
         ButtonEditarAficion = new javax.swing.JButton();
@@ -56,31 +85,61 @@ public class EdicionUsuario extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         ButtonCambiarNombre.setText("Cambiar nombre");
+        ButtonCambiarNombre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ButtonCambiarNombreActionPerformed(evt);
+            }
+        });
 
         ButtonCambiarFechaNacimiento.setText("Cambiar fecha de nacimiento");
+        ButtonCambiarFechaNacimiento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ButtonCambiarFechaNacimientoActionPerformed(evt);
+            }
+        });
 
         ButtonCambiarAvatar.setText("Cambiar avatar");
+        ButtonCambiarAvatar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ButtonCambiarAvatarActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Descripción");
 
-        TextAreaDescripción.setColumns(20);
-        TextAreaDescripción.setRows(5);
-        jScrollPane1.setViewportView(TextAreaDescripción);
+        textAreaDescripcion.setColumns(20);
+        textAreaDescripcion.setRows(5);
+        jScrollPane1.setViewportView(textAreaDescripcion);
 
         jLabel2.setText("Aficiones");
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+        ListaAficiones.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane2.setViewportView(jList1);
+        jScrollPane2.setViewportView(ListaAficiones);
 
         ButtonAddAficion.setText("Añadir afición");
+        ButtonAddAficion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ButtonAddAficionActionPerformed(evt);
+            }
+        });
 
         ButtonEliminarAficion.setText("Eliminar seleccionada");
+        ButtonEliminarAficion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ButtonEliminarAficionActionPerformed(evt);
+            }
+        });
 
         ButtonEditarAficion.setText("Editar seleccionada");
+        ButtonEditarAficion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ButtonEditarAficionActionPerformed(evt);
+            }
+        });
 
         jLabel3.setText("Sexo: ");
 
@@ -91,6 +150,11 @@ public class EdicionUsuario extends javax.swing.JDialog {
         LabelBusca.setText("Mujeres");
 
         ButtonCambiarSexo.setText("Cambiar sexo");
+        ButtonCambiarSexo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ButtonCambiarSexoActionPerformed(evt);
+            }
+        });
 
         ButtonCambiarPreferencia.setText("Cambiar preferencia");
 
@@ -190,8 +254,18 @@ public class EdicionUsuario extends javax.swing.JDialog {
         ButtonCambiarContraseña.setText("Cambiar contraseña");
 
         ButtonCancelar.setText("Cancelar");
+        ButtonCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ButtonCancelarActionPerformed(evt);
+            }
+        });
 
         ButtonGuardarCambios.setText("Guardar cambios");
+        ButtonGuardarCambios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ButtonGuardarCambiosActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -224,6 +298,145 @@ public class EdicionUsuario extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void ButtonCambiarNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonCambiarNombreActionPerformed
+        // TODO add your handling code here:
+        JDialog cambiarNombre = new JDialog(this, true);
+        cambiaNombre = JOptionPane.showInputDialog(cambiarNombre, "Editar nombre");
+        System.out.println(cambiaNombre);
+    }//GEN-LAST:event_ButtonCambiarNombreActionPerformed
+
+    private void ButtonCambiarFechaNacimientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonCambiarFechaNacimientoActionPerformed
+        JDialog dialog = new JDialog(this, true);
+        dialog.setBounds(0, 0, 400, 150);
+        JPanel panel = new JPanel();
+        JDateChooser fecha = new JDateChooser();
+        panel.add(fecha);
+        JButton aceptar = new JButton("Aceptar");
+        panel.add(aceptar);
+        dialog.add(panel);
+        dialog.setVisible(true);
+        aceptar.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cambiaFecha = fecha.getDate();
+                System.out.println(cambiaFecha);
+                dialog.setVisible(false);
+            }
+        });
+    }//GEN-LAST:event_ButtonCambiarFechaNacimientoActionPerformed
+
+    private void ButtonCambiarAvatarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonCambiarAvatarActionPerformed
+        JDialog frame = new JDialog(this, true);
+        frame.setBounds(0, 0, 600, 400);
+        JPanel panel = new JPanel();
+        JFileChooser avatar = new JFileChooser();
+        avatar.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("JPG y PNG","jpg","png");
+        avatar.setFileFilter(filtro);
+        panel.add(avatar);
+        JButton aceptar = new JButton("Aceptar");
+        panel.add(aceptar);
+        frame.add(panel);
+        frame.setVisible(true);
+        aceptar.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ImageIcon cambiaImagen = new ImageIcon(avatar.getSelectedFile().toString());
+                // falta pasar a array de bytes
+                frame.setVisible(false);
+            }
+        });
+    }//GEN-LAST:event_ButtonCambiarAvatarActionPerformed
+
+    private void ButtonAddAficionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonAddAficionActionPerformed
+        JDialog addAficion = new JDialog(this, true);
+        String nuevaAficion = JOptionPane.showInputDialog(addAficion, "Introduce nueva afición: ");
+        aficiones.add(nuevaAficion);
+        listaModel.addElement(nuevaAficion);
+        ListaAficiones.setModel(listaModel);
+        System.out.println(nuevaAficion);
+    }//GEN-LAST:event_ButtonAddAficionActionPerformed
+
+    private void ButtonEditarAficionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonEditarAficionActionPerformed
+       JDialog dialog = new JDialog(this, true);
+       dialog.setBounds(500, 60, 350, 80);
+       JPanel cambiarPreferencia = new JPanel();
+       JCheckBox hombres = new JCheckBox("Hombres");
+       JCheckBox mujeres = new JCheckBox("Mujeres");
+       JCheckBox ambos = new JCheckBox("Ambos");
+       JButton aceptar = new JButton("Aceptar");
+       cambiarPreferencia.add(hombres);
+       cambiarPreferencia.add(mujeres);
+       cambiarPreferencia.add(ambos);
+       cambiarPreferencia.add(aceptar);
+       dialog.add(cambiarPreferencia);
+       dialog.setVisible(true);
+       
+        aceptar.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent evt) {       
+                if(hombres.isSelected())
+                    cambiaPreferencia = Genero.HOMBRE;
+                else if (mujeres.isSelected())
+                    cambiaPreferencia = Genero.MUJER;
+                else
+                    cambiaPreferencia = Genero.AMBOS;
+
+                 System.out.println(cambiaPreferencia);
+                 dialog.setVisible(false);
+            }
+        });
+
+    }//GEN-LAST:event_ButtonEditarAficionActionPerformed
+
+    private void ButtonGuardarCambiosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonGuardarCambiosActionPerformed
+        user.setNombre(cambiaNombre);
+        user.setFecha_nac(cambiaFecha);
+        //user.setFoto(cambiaAvatar.);
+        user.setGenero(cambiaGenero);
+        user.setBusca(cambiaPreferencia);
+        user.setAficiones(aficiones);
+        user.setDescripcion(textAreaDescripcion.getText());
+        user.setAmigo(null);
+        user.setCompleta(null);
+        user.setRecibidos(null);
+        user.setEnviados(null);
+    }//GEN-LAST:event_ButtonGuardarCambiosActionPerformed
+
+    private void ButtonCambiarSexoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonCambiarSexoActionPerformed
+       JDialog dialog = new JDialog(this, true);
+       dialog.setBounds(500, 60, 350, 80);
+       JPanel cambiarPreferencia = new JPanel();
+       JButton aceptar = new JButton("Aceptar");
+       JCheckBox masculino = new JCheckBox("Masculino");
+       JCheckBox femenino = new JCheckBox("Femenino");       
+       cambiarPreferencia.add(masculino);
+       cambiarPreferencia.add(femenino);
+       cambiarPreferencia.add(aceptar);
+       dialog.add(cambiarPreferencia);
+       dialog.setVisible(true);
+       if(masculino.isSelected())
+           cambiaGenero = Genero.HOMBRE;
+       else if (femenino.isSelected())
+           cambiaGenero = Genero.MUJER;
+       else
+           cambiaGenero = Genero.AMBOS;
+    }//GEN-LAST:event_ButtonCambiarSexoActionPerformed
+
+    private void ButtonEliminarAficionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonEliminarAficionActionPerformed
+       listaModel.remove(ListaAficiones.getSelectedIndex()); 
+    }//GEN-LAST:event_ButtonEliminarAficionActionPerformed
+
+    private void ButtonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonCancelarActionPerformed
+        cancelar = true;
+        // borra las aficiones que antes estaban
+        listaModel.removeAllElements();
+        ListaAficiones.removeAll();
+        // borra el area de texto
+        textAreaDescripcion.setText(null);        
+        this.setVisible(false);
+    }//GEN-LAST:event_ButtonCancelarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -254,7 +467,7 @@ public class EdicionUsuario extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                EdicionUsuario dialog = new EdicionUsuario(new javax.swing.JFrame(), true);
+                EdicionUsuario dialog = new EdicionUsuario(new javax.swing.JFrame(), true, null, null);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -282,14 +495,14 @@ public class EdicionUsuario extends javax.swing.JDialog {
     private javax.swing.JLabel LabelEdad;
     private javax.swing.JLabel LabelNombre;
     private javax.swing.JLabel LabelSexo;
-    private javax.swing.JTextArea TextAreaDescripción;
+    private javax.swing.JList<String> ListaAficiones;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JList<String> jList1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTextArea textAreaDescripcion;
     // End of variables declaration//GEN-END:variables
 }
