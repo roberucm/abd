@@ -85,12 +85,12 @@ public class MainWindow extends javax.swing.JFrame {
 
         FiltrarAmigosCheckBox.setText("Mostrar sólo amigos");
 
-        jList1.setModel(new javax.swing.AbstractListModel<Usuario>() {
-
-            ArrayList usuarios = ctrl.obtenerUsuarios();
-            public int getSize() { return usuarios.size(); }
-            public Object getElementAt(int i) { return (Object)usuarios.get(i); }
-        });
+        ArrayList usuarios = ctrl.obtenerUsuarios();
+        for(int i=0; i<usuarios.size(); i++) {
+            jList1.add(i, usuarios.get(i));
+        }
+        jList1.setModel(new DefaultListModel();
+        );
         jScrollPane1.setViewportView(jList1);
 
         jMenuBar1.setBorder(null);
